@@ -1,20 +1,10 @@
 package Leet_338;
 
 class Solution {
-    int totalBits(int n){
-        int c = 0;
-        while(n!=0){
-            n = n & (n-1);
-            c++;
-        }
-        return c;
-    }
-
     int[] countBits(int n) {
         int resArr[] = new int[n + 1];
-        resArr[0] = 0;
         for(int i=1;i<=n;i++){
-            resArr[i] = totalBits(i);
+            resArr[i] = resArr[i>>1] + (i & 1);
         }
         return resArr;
     }
