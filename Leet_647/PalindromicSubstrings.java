@@ -2,34 +2,37 @@ package Leet_647;
 
 class Solution {
     public String longestPalindrome(String s) {
-        String res = "";
+        int start = 0, end = 0;
+        if (s.length() < 2) {
+            return s;
+        }
         for (int i = 0; i < s.length(); i++) {
-            int l = i - 1, r = i + 1;
-            String temp = "" + s.charAt(i);
-            while (r < s.length() && s.charAt(i) == s.charAt(r)) {
-                temp += s.charAt(r);
+            int l = i, r = i;
+            while (r < s.length() - 1 && s.charAt(i) == s.charAt(r + 1)) {
                 r++;
             }
 
-            while (l >= 0 && r < s.length()) {
-                if (s.charAt(l) == s.charAt(r)) {
-                    temp = s.charAt(l) + temp + s.charAt(r);                   
+            while (l > 0 && r < s.length() - 1) {
+                if (s.charAt(l - 1) == s.charAt(r + 1)) {
                     l--;
                     r++;
                 } else {
                     break;
                 }
             }
-            res = res.length() < temp.length() ? temp : res;
+            if (end - start + 1 < r - l + 1) {
+                start = l;
+                end = r;
+            }
         }
-        return res;
+        return s.substring(start, end + 1);
     }
 }
 
 public class PalindromicSubstrings {
     public static void main(String args[]) {
         Solution sol = new Solution();
-        String s = "a";
+        String s = "ac";
         String res = sol.longestPalindrome(s);
         System.out.println(res);
     }
