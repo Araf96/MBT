@@ -3,11 +3,12 @@ package Leet_191;
 class Solution {
     // you need to treat n as an unsigned value
     int hammingWeight(int n) {
-        int c = 0;
-        String bs = Integer.toBinaryString(n);
-        for(int i=0;i<bs.length();i++){
-            if(bs.charAt(i)=='1')c++;
+        int c=0;
+        while(n!=0){
+            n = n & (n -1);
+            c++;
         }
+
         return c;
     }
 }
