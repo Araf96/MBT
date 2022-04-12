@@ -1,5 +1,8 @@
 package Leet_23;
 
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
 import javax.rmi.CORBA.Util;
 
 class ListNode {
@@ -21,34 +24,36 @@ class ListNode {
 
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
+        if(lists==null || lists.length==0)return null;
         ListNode res = null;
-        ListNode curr = res;
-        //ListNode prev = res;
-        int nullCount;
-        while (true) {
-            ListNode min = new ListNode(Integer.MAX_VALUE);
-            nullCount = 0;
-            int idx = 0;
-            for (int i = 0; i < lists.length; i++) {
-                if(lists[i]!=null){
-                    if(lists[i].val < min.val){
-                        min = lists[i];
-                        idx = i;
-                    }
-                }else{
-                    nullCount++;
-                }
+        ListNode curr = null;
+        ListNode prev = null;
+
+        PriorityQueue<ListNode> pq = new PriorityQueue<ListNode>(lists.length, new Comparator<ListNode>() {
+            @Override
+            public int compare(ListNode a, ListNode b){
+                if(a.val < b.val)return -1;
+                else return 1;
             }
-            if(nullCount == lists.length){
-                break;
+        });
+        for(ListNode list : lists){
+            if(list!=null){
+                pq.add(list);
             }
-            lists[idx] = lists[idx].next;
+            
+        }
+
+        while(!pq.isEmpty()){
+            curr = pq.poll();
+            if(curr.next!=null){
+                pq.add(curr.next);
+            }
             if(res == null){
-                res = min;
-                curr = res;
+                res = curr;
+                prev = res;
             }else{
-                curr.next = min;
-                curr = min;
+                prev.next = curr;
+                prev = curr;
             }
         }
         return res;
@@ -76,7 +81,7 @@ class Utils {
 public class MergeKSortedList {
 
     public static void main(String args[]) {
-        int arr1[] = {  };
+        int arr1[] = { 1, 2,5 };
         int arr2[] = { 1, 3, 4 };
         int arr3[] = { 2, 6 };
 
